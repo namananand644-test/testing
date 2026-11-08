@@ -10,6 +10,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   first-job:
     runs-on: ubuntu-latest
@@ -26,3 +30,15 @@ jobs:
 
       - name: Show Python version
         run: python3 --version
+
+  merge-pr:
+    needs: first-job
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Enable automatic PR merge
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr merge "$PR_URL" --auto --merge
