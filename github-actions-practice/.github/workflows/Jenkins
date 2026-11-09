@@ -1,0 +1,33 @@
+
+pipeline {
+    agent {
+        docker {
+            image 'python:3.12-slim'
+        }
+    }
+
+    stages {
+        stage('Check Container') {
+            steps {
+                sh 'echo "Hello from Jenkins Docker Agent!"'
+                sh 'whoami'
+                sh 'hostname'
+                sh 'cat /etc/os-release'
+            }
+        }
+
+        stage('Check Python') {
+            steps {
+                sh 'python --version'
+                sh 'python -c "print(\"Python is running inside Docker!\")"'
+            }
+        }
+
+        stage('Keep Container Alive') {
+            steps {
+                sh 'echo "Container is running. Inspect it from EC2 now!"'
+                sh 'sleep 30'
+            }
+        }
+    }
+}
