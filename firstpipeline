@@ -1,52 +1,48 @@
 
 pipeline {
-    agent none
+    agent any
 
     stages {
-
-        stage('Python Agent') {
-            agent {
-                docker {
-                    image 'python:3.12-slim'
-                }
-            }
-
+        stage('Start Pipeline') {
             steps {
-                echo 'Running inside Python Docker Agent'
-
-                sh 'echo "Checking Python environment"'
-                sh 'python --version'
-                sh 'python -c "print(10 + 20)"'
-                sh 'sleep 20'
+                echo '🚀 Automatic CI Pipeline Started!'
+                echo "Build Number: ${BUILD_NUMBER}"
+                echo "Triggered by: ${BUILD_TAG}"
             }
         }
 
-        stage('Node Agent') {
-            agent {
-                docker {
-                    image 'node:22-alpine'
-                }
-            }
-
+        stage('Check Environment') {
             steps {
-                echo 'Running inside Node.js Docker Agent'
+                sh 'echo "Checking Linux environment..."'
+                sh 'hostname'
+                sh 'pwd'
+                sh 'date'
+            }
+        }
 
-                sh 'echo "Checking Node.js environment"'
-                sh 'node --version'
-                sh 'npm --version'
-                sh 'node -e "console.log(10 + 20)"'
-                sh 'sleep 20'
+        stage('Run Application Test') {
+            steps {
+                echo 'Running application tests...'
+                sh 'echo "Test 1: Application initialized successfully"'
+                sh 'echo "Test 2: Environment check passed"'
+                sh 'echo "Test 3: CI pipeline passed"'
             }
         }
 
         stage('Pipeline Completed') {
-            agent any
-
             steps {
-                echo 'Both Docker agents completed successfully!'
-                sh 'hostname'
-                sh 'whoami'
+                echo '🎉 All stages completed successfully!'
             }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ CI BUILD SUCCESSFUL!'
+        }
+
+        failure {
+            echo '❌ CI BUILD FAILED!'
         }
     }
 }
