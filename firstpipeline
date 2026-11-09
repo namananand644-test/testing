@@ -10,7 +10,7 @@ pipeline {
         stage('Check Container') {
             steps {
                 sh 'echo "Hello from Jenkins Docker Agent!"'
-                sh 'whoami'
+                sh 'id'
                 sh 'hostname'
                 sh 'cat /etc/os-release'
             }
@@ -25,7 +25,7 @@ pipeline {
 
         stage('Keep Container Alive') {
             steps {
-                sh 'echo "Container is running. Inspect it from EC2 now!"'
+                sh 'echo "Container is running!"'
                 sh 'sleep 30'
             }
         }
